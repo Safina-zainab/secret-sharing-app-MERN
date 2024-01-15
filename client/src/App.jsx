@@ -3,6 +3,9 @@ import Layout from "./pages/Layout";
 import Home from "./pages/Home";
 import LoginRegister from "./pages/auth/LoginRegister";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import SendPasswordResetEmail from "./pages/auth/SendPasswordResetEmail";
+import ResetPassword from "./pages/auth/ResetPassword";
+import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
@@ -12,14 +15,14 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="login" element={<LoginRegister />} />
-            {/* <Route
+            <Route
               path="sendpasswordresetemail"
               element={<SendPasswordResetEmail />}
-            /> */}
-            {/* <Route path="reset" element={<ResetPassword />} /> */}
+            />
+            <Route path="reset" element={<ResetPassword />} />
           </Route>
-          {/* <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="*" element={<h1>Error 404 Page not found !!</h1>} /> */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="*" element={<h1>Error 404 Page not found !!</h1>} />
         </Routes>
       </BrowserRouter>
     </>
