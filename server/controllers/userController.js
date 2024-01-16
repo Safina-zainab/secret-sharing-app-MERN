@@ -30,7 +30,7 @@ class UserController {
               process.env.JWT_SECRET_KEY,
               { expiresIn: "5d" }
             );
-            res.status(201).send({
+            res.status(200).send({
               status: "success",
               message: "Registration Success",
               token: token,
@@ -129,18 +129,19 @@ class UserController {
         const token = jwt.sign({ userID: user._id }, secret, {
           expiresIn: "15m",
         });
-        const link = `http://127.0.0.1:3000/api/user/reset/${user._id}/${token}`;
-        console.log(link);
-        // Send Email
-        let info = await transporter.sendMail({
-          from: process.env.EMAIL_FROM,
-          to: user.email,
-          subject: "Secret App  - Password Reset Link",
-          html: `<a href=${link}>Click Here</a> to Reset Your Password`,
-        });
+        const link = `http://localhost:5174/api/user/reset/${user._id}/${token}`;
+        console.log(link)
+        // // Send Email
+        // let info = await transporter.sendMail({
+        //   from: process.env.EMAIL_FROM,
+        //   to: user.email,
+        //   subject: "GeekShop - Password Reset Link",
+        //   html: `<a href=${link}>Click Here</a> to Reset Your Password`
+        // })
         res.send({
           status: "success",
-          message: "Password Reset Email Sent... Please Check Your Email", "info" : info
+          message: "Password Reset Email Sent... Please Check Your Email",
+        
         });
       } else {
         res.send({ status: "failed", message: "Email doesn't exists" });
