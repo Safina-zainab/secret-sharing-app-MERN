@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useRegisterUserMutation } from "../../services/userAuthApi";
+import { storeToken } from "../../services/LocalStorageService";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -19,7 +21,9 @@ const Registration = () => {
     type: "",
   });
 
-  const handleSubmit = (e) => {
+  const [registerUser] = useRegisterUserMutation();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const actualData = {
@@ -38,15 +42,18 @@ const Registration = () => {
     ) {
       if (actualData.password === actualData.password_confirmation) {
         console.log(actualData);
-        document.getElementById("registration-form").reset();
+        const response = await registerUser(actualData);
         setError({
           status: true,
           msg: "Registration Successful",
           type: "success",
         });
-        setTimeout(() => {
-            navigate('/dashboard')
-        },1000)
+        if (response.data.status === "success") {
+          storeToken(res.data.token)
+          setTimeout(() => {
+            navigate("/dashboard");
+          }, 1000);
+        }
       } else {
         setError({
           status: true,
