@@ -49,7 +49,7 @@ const Registration = () => {
           type: "success",
         });
         if (response.data.status === "success") {
-          storeToken(res.data.token)
+          storeToken(response.data.token)
           setTimeout(() => {
             navigate("/dashboard");
           }, 1000);

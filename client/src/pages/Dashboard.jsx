@@ -8,8 +8,9 @@ import {
   Box,
   Toolbar,
   TextField,
-  FormControlLabel,
+  Alert,
 } from "@mui/material";
+import { usePostMutation } from "../services/postAPI";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -28,6 +29,14 @@ const Dashboard = () => {
   });
   const [secretMessage, setSecretMessage] = useState("");
 
+  const [error, setError] = useState({
+    status: false,
+    msg: "",
+    type: "",
+  });
+
+  const [post] = usePostMutation();
+
   // Store User Data in Local State
   useEffect(() => {
     if (data && isSuccess) {
@@ -38,9 +47,15 @@ const Dashboard = () => {
     }
   }, [data, isSuccess]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("Secret Message:", secretMessage);
-    setSecretMessage('')
+    setSecretMessage("");
+    const response = await post(secretMessage);
+    setError({
+      status: true,
+      msg: "Posted Successful",
+      type: "success",
+    });
   };
 
   return (
@@ -92,6 +107,7 @@ const Dashboard = () => {
             Post
           </Button>
         </Grid>
+        {error.status ? <Alert severity={error.type}>{error.msg}</Alert> : ""}
       </Grid>
     </>
   );
