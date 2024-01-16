@@ -1,16 +1,17 @@
-import { Button, CssBaseline, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  List,
+  Grid,
+  Typography,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { getToken, removeToken } from "../services/LocalStorageService";
 import { useGetLoggedUserQuery } from "../services/userAuthApi";
 import { useEffect, useState } from "react";
-import {
-  AppBar,
-  Box,
-  Toolbar,
-  TextField,
-  Alert,
-} from "@mui/material";
-import { usePostMutation } from "../services/postAPI";
+import { AppBar, Box, Toolbar, TextField, Alert } from "@mui/material";
+import { usePostMutation, useGetPostsQuery } from "../services/postAPI";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -28,6 +29,8 @@ const Dashboard = () => {
     name: "",
   });
   const [secretMessage, setSecretMessage] = useState("");
+  const { data: { messages: posts } = {}, isSuccess: postsSuccess } =
+    useGetPostsQuery();
 
   const [error, setError] = useState({
     status: false,
@@ -57,6 +60,12 @@ const Dashboard = () => {
       type: "success",
     });
   };
+
+  useEffect(() => {
+    if (postsSuccess) {
+      console.log("Fetched Posts:", posts);
+    }
+  }, [postsSuccess, posts]);
 
   return (
     <>
@@ -107,8 +116,29 @@ const Dashboard = () => {
             Post
           </Button>
         </Grid>
-        {error.status ? <Alert severity={error.type}>{error.msg}</Alert> : ""}
+        <Grid sx={{ marginLeft: "20%" }}>
+          <Box>
+            <Typography variant="h4">List of Posts</Typography>
+            <List
+              sx={{
+                border: "1px solid #ccc",
+                borderRadius: "8px",
+                padding: "16px",
+              }}
+            >
+              {posts?.map((post) => (
+                <ListItem
+                  key={post._id}
+                  sx={{ borderBottom: "1px solid #eee", padding: "5px 0"}}
+                >
+                  <ListItemText primary={post.message} />
+                </ListItem>
+              ))}
+            </List>
+          </Box>
+        </Grid>
       </Grid>
+      {error.status ? <Alert severity={error.type}>{error.msg}</Alert> : ""}
     </>
   );
 };
