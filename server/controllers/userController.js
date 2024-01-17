@@ -125,11 +125,17 @@ class UserController {
     if (email) {
       const user = await UserModel.findOne({ email: email });
       if (user) {
+        const protocol = req.protocol; // http or https
+        const host = req.get('host'); // domain and port
         const secret = user._id + process.env.JWT_SECRET_KEY;
         const token = jwt.sign({ userID: user._id }, secret, {
           expiresIn: "15m",
         });
-        const link = `http://localhost:5174/api/user/reset/${user._id}/${token}`;
+        // link for deployment
+        const link = `https://secret-sharing-app-mern.vercel.app/api/user/reset/${user._id}/${token}`;
+
+        // link for local
+        // const link = `http://localhost:5174/api/user/reset/${user._id}/${token}`;
         console.log(link)
         // // Send Email
         // let info = await transporter.sendMail({
