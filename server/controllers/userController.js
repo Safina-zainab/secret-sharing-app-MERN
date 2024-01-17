@@ -125,8 +125,6 @@ class UserController {
     if (email) {
       const user = await UserModel.findOne({ email: email });
       if (user) {
-        const protocol = req.protocol; // http or https
-        const host = req.get('host'); // domain and port
         const secret = user._id + process.env.JWT_SECRET_KEY;
         const token = jwt.sign({ userID: user._id }, secret, {
           expiresIn: "15m",
@@ -141,7 +139,7 @@ class UserController {
         // let info = await transporter.sendMail({
         //   from: process.env.EMAIL_FROM,
         //   to: user.email,
-        //   subject: "GeekShop - Password Reset Link",
+        //   subject: "secret-sharing-app - Password Reset Link",
         //   html: `<a href=${link}>Click Here</a> to Reset Your Password`
         // })
         res.send({
