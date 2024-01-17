@@ -11,6 +11,7 @@ This is a Secret Sharing App that allows users to share and view secret messages
   - Login: Authenticate users with their credentials.
   - Forgot Password: Send password reset links to the user's email.
   - Reset Password: Change the password using the reset link.
+  [Note : For Testing Purpose, the reset link will be provided in the console, using that link u can change the password. If you have the correct credential you also send the link in mail]
 
 - **Secret Sharing:**
   - Post Your Secret: Share a secret message securely.
@@ -40,6 +41,17 @@ This is a Secret Sharing App that allows users to share and view secret messages
 
 ### Client & Server
 
+# Create a .env file in server folder to hold the secret variables
+```bash
+PORT = 8000
+DATABASE_URL = "your-db-url"
+JWT_SECRET_KEY="any-secert-key"
+EMAIL_HOST ="smtp.gmail.com"
+EMAIL_POST = 587
+EMAIL_USER= 'your-email-user'
+EMAIL_PASS = 'your-password'
+EMAIL_FROM = 'your-email-id'
+```
 ```bash
 # Install dependencies
 npm install
